@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<style>
+		.addTrain, .trains {border:2px solid blue; width:90%; margin:5%}
+		#addTrainHead, #trainScheduleHead {background: blue; color:white; margin:0 auto;}
+		h5, input {margin-left:2%}
+		table {display:table; margin:auto}
+	</style>.
+</head>
+<body>
+	<div class="container-fluid main">
+		<div class="row title"><h1> train</h1>
+		</div>
+		<div class="row trains"><h4 id="trainScheduleHead"> Current Train Schedule</h4> 
+			<table class="table table-striped">
+			    <thead>
+			      <tr>
+			        <th>Train Name</th>
+			        <th>Destination</th>
+			        <th>Frequency (min)</th>
+			        <th>Next Arrival </th>
+			        <th>Minutes Away </th>
+			      </tr>
+			    </thead>
+			    <tbody>
+			      <tr>
+			        <td>John</td>
+			        <td>Doe</td>
+			        <td>john@example.com</td>
+			        <td> asdad </td>
+			        <td> asdad </td>
+			      </tr>
+			      <tr>
+			        <td>Mary</td>
+			        <td>Moe</td>
+			        <td>mary@example.com</td>
+			        <td> asdad </td>
+			        <td> asdad </td>
+			      </tr>
+			      <tr>
+			        <td>July</td>
+			        <td>Dooley</td>
+			        <td>july@example.com</td>
+			        <td> asdad </td>
+			        <td> asdad </td>
+			      </tr>
+			    </tbody>
+			  </table>
+		</div>
+		<div class="row addTrain"><h4 id="addTrainHead"> Add Train </h4>
+			<h5> Train Name </h5>
+			<input type="text" id="trainName">
+			<h5> Destination </h5>
+			<input type="text" id="trainDestination">
+			<h5> First Train Time (HH:mm - military time) </h5>
+			<input type="text" id="firstTime">
+			<h5> Frequency (min) </h5>
+			<input type="text" id="frequency">
+			<input id="submit" type="submit" value="Submit">
+		</div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	<script src="https://www.gstatic.com/firebasejs/3.3.2/firebase.js"></script>
+	<script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDaPvYALiV1qQwyDxIrIfkwCUerTu_uSiA",
+    authDomain: "firstproject-b5d04.firebaseapp.com",
+    databaseURL: "https://firstproject-b5d04.firebaseio.com",
+    storageBucket: "",
+  };
+  firebase.initializeApp(config);
+
+
+var database = firebase.database();
+database.ref().set({
+	trains: "sadasd"
+});
+
+// var firstTimeConverted = moment(firstTime,"hh:mm").subtract(1, "years");
+// var currentTime = moment();
+// var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+// var tRemainder = diffTime % tFrequency;
+// var tMinutesTillTrain = tFrequency - tRemainder;
+// var nextTrain = moment().add(tMinutesTillTrain, "minutes")
+
+$("#submit").on("click", function() {
+	let name = $("#trainName").val();
+	let destination = $("#trainDestination").val();
+	let time = $("#firstTime").val();
+	let freq = $("#frequency").val();
+	console.log(name)
+	console.log(destination)
+	console.log(time)
+	console.log(freq)
+	$('.table').append('<tr><td>' + name + '</td><td>' + destination + '</td><td>' + freq + '</td><td>' + time+ '</td></tr>');
+	database.ref('trains').update ({
+		'name': name,
+		'destination': destination,
+		'time' : time,
+		'frequency' : freq,
+	});
+});
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<style>
+		.main {text-align:center;}
+		.main div {margin-bottom:50px;}
+	</style>.
+</head>
+<body>
+	<div class="container-fluid main">
+		<div class="row title"><h1> RPS YO </h1>
+		</div>
+		<div class="row playerTurn"><h3> blah blah blah </h3> 
+			<input type="text" id="playerName">
+			<input id="submit" type="submit" value="Start">
+		</div>
+		<div class="row players">
+			<div class="col-sm-4 playerOne">
+				<h4> player 1 </h4>
+			</div>
+			<div class="col-sm-4 winner">
+				<h4> Who Won? </h4>
+			</div>
+			<div class="col-sm-4 playerTwo">
+				<h4> player 2 </h4>
+			</div>
+		</div>
+		<div class="row chat">
+			<h4> this is where chat be </h4>
+		</div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	<script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+
+
+<script>
+	var config = {
+    apiKey: "AIzaSyCBYUEULk5bPyNSuWSSvtFDTqkKdPmlstc",
+    authDomain: "fir-new-3d9ef.firebaseapp.com",
+    databaseURL: "https://fir-new-3d9ef.firebaseio.com",
+    storageBucket: "fir-new-3d9ef.appspot.com",
+  };
+   firebase.initializeApp(config);
+
+   	var turns = 0
+	var database = firebase.database();
+	var game = {};
+	var oneFilled = false;
+	var twoFilled = false;
+	var losses = 0;
+	var wins = 0;
+
+
+	function clear() {
+		database.ref().set(null);
+	}
+	clear();
+	
+
+	$(document).on("click", "#submit", function() {
+		let player = $("#playerName").val();
+		console.log(player);
+		if (oneFilled == false && twoFilled == false) {
+			$(".playerOne").html(player);
+			database.ref().set({
+			players: {
+				1: {
+					wins: wins,
+					name: player,
+					losses: losses
+					}
+				},
+			turns: 0
+			});
+			database.ref().on("value", function(snapshot) {
+				let x = snapshot.val().players
+				console.log(x);
+			});
+			oneFilled = true;
+		} else if (oneFilled == true && twoFilled == false) {
+			$(".playerTwo").html(player);
+			database.ref().on("value", function(snapshot) {
+				let x = snapshot.val().players
+				console.log(x);
+			});
+			/* playersRef.update({
+				2: {
+					wins:wins,
+					name:player,
+					losses: losses
+				},
+			}); */
+			twoFilled = true;
+		}
+	});
+
+
+
+	
+	</script>
+</script>
+</body>
+</html>
